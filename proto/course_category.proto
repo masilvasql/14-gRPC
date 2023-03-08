@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "internal/pb";
+
+// Schema da categoria
+message Category{
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+// O que deverá ser passado na request pelo client
+message CreateCategoryRequest{
+    string name = 1; 
+    string description = 2;
+}
+
+
+message CatregoryList {
+    repeated Category categories = 1;
+}
+
+message blank{
+}
+
+message CategoryGetRequest{
+    string id = 1;
+}
+
+// Métodos RPC (Remote Procedure Call) que podem ser executados no "endpoint"
+service CategoryService{
+    rpc CreateCategory(CreateCategoryRequest) returns (Category) {}
+    rpc CreateCategoryStream(stream CreateCategoryRequest) returns (CatregoryList){}
+    rpc CreateCategoryStreamBidirectional(stream CreateCategoryRequest) returns (stream Category){}
+    rpc ListCategories(blank) returns (CatregoryList){}
+    rpc getCategory(CategoryGetRequest) returns (Category){}
+} 
